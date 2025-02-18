@@ -1,3 +1,5 @@
+from crypt import methods
+
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 app = Flask(__name__)
@@ -38,10 +40,22 @@ def angebot_erstellen():
     hersteller = cursor.fetchall()
     cursor.execute("Select * FROM autos")
     modelle = cursor.fetchall()
-    cursor.execute("Select * FROM users")
+    cursor.execute("Select * FROM anbieter")
     verkaufer = cursor.fetchall()
     connection.close()
-    return render_template('createOffer.html', hersteller_liste=hersteller, modelle=modelle, verkaufer=verkaufer)
+    return render_template('createOffer.html', hersteller_liste=hersteller, modelle_liste=modelle, verkaeufer_liste=verkaufer)
+
+
+# ?hersteller=Volkswagen&automodel=M3&preis=1234&beschreibung=Hallo+Dejan&verkaeufer=Bernard
+@app.route('/angebot_einfuegen', methods=['GET'])
+def angebot_einfuegen():
+    hersteller_name = request.args.get('hersteller')
+    automodel_name = request.args.get('automodel')
+    preis = request.args.get('preis')
+    beschreibung = request.args.get('beschreibung')
+    verkaufer_name = request.args.get('verkaufer')
+    print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
+    return "Ihr Angebot wurde erfolgreich erstellt"
 @app.route('/')
 def homepage():
     return render_template('HOMEPAGE.html')

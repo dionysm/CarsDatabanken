@@ -5,48 +5,46 @@
     <title>Login</title>
 </head>
 <body>
-<form>
+<form action="{{ url_for('angebot_einfuegen') }}" method="GET">
     <h1>Wähle einen Hersteller aus</h1>
-
     <label for="hersteller">Hersteller:</label>
-      <br>
-    <input type="text" name="hersteller" list="herstellerindb">
+    <br>
+    <input type="text" name="hersteller" id="hersteller" list="herstellerindb">
     <datalist id="herstellerindb">
         {% for hersteller in hersteller_liste %}
-        <option value="{{ hersteller[1] }}">{{ hersteller[1] }}</option>
-      {% endfor %}
+            <option value="{{ hersteller[1] }}">{{ hersteller[1] }}</option>
+        {% endfor %}
     </datalist>
-
     <br>
-
     <label for="automodel">Automodel:</label>
-      <br>
+    <br>
     <input type="text" name="automodel" list="automodels_in_db">
     <datalist id="automodels_in_db">
-        <option value="3er Golf">
-        <option value="Käfer">
-        <option value="3">
-        <option value="7">
+        {% for automodel in modelle_liste %}
+            <option value="{{ automodel[1] }}">{{ automodel[1] }}</option>
+        {% endfor %}
     </datalist>
     <br>
-
-
     <label for="preis">Preis:</label>
     <br>
     <input id="preis" name="preis">
-    <br><br>
+    <br>
+    <br>
     <label for="beschreibung">Angebots Beschreibung:</label>
     <br>
     <textarea id="beschreibung" name="beschreibung"> Hier Bitte Angebot beschreiben </textarea>
     <br>
-          <br>
+    <br>
     <label for="verkaeufer">Verkaeufer:</label>
     <br>
-    <input id="verkaeufer" name="verkaeufer">
-    <br><br>
-    <button type="submit">Angebot Erstellen</button>
-
-
+    <input type="text" name="verkaeufer" list="verkaeufer_in_db">
+    <datalist id="verkaeufer_in_db">
+        {% for verkaeufer in verkaeufer_liste %}
+            <option value="{{ verkaeufer[1] }}">{{ verkaeufer[1] }}</option>
+        {% endfor %}
+    </datalist>
+    <br>
+    <button type="submit">Angebot erstellen</button>
 </form>
 </body>
 </html>
