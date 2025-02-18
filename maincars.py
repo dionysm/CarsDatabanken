@@ -50,10 +50,33 @@ def angebot_erstellen():
 def angebot_einfuegen():
     hersteller_name = request.args.get('hersteller')
     automodel_name = request.args.get('automodel')
+
+
     preis = request.args.get('preis')
     beschreibung = request.args.get('beschreibung')
     verkaufer_name = request.args.get('verkaufer')
+
+    connection = sqlite3.connect('autowelt.db')
+    cursor = connection.cursor()
+
+
+    test = cursor.execute(
+        "SELECT hersteller.id FROM hersteller WHERE hersteller.name = ?;",
+        (hersteller_name,)
+    )
+    print("HALLO =============> ")
+    print(test.fetchall())
+
+    connection.commit()
+    connection.close()
+    print("Datensätze erstellt" )
+
+    # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
+
+
+
+
     return "Ihr Angebot wurde erfolgreich erstellt"
 @app.route('/')
 def homepage():
