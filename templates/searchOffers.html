@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>die Welt der Autos</title>
+</head>
+<body>
+    <h1>die Welt der Autos</h1>
+    <form method="GET" action="/result">
+        <label for="hersteller">Hersteller</label>
+
+    <h1>Wähle einen Hersteller aus</h1>
+    <select name="id">
+      {% for hersteller in data %}
+        <option value="{{ hersteller[0] }}">{{ hersteller[1] }}</option>
+      {% endfor %}
+    </select>
+
+
+   <!--  <select name="hersteller" id="Hersteller">
+        <option value="Volkswagen">Volkswagen</option>
+        <option value="BMW">BMW</option>
+        <option value="Audi">Audi</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Porsche">Porsche</option>
+
+    </select>-->
+    <button type="submit">Okay</button>
+    </form>
+
+
+</body>
+</html>
