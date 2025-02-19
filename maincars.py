@@ -81,9 +81,37 @@ def angebot_einfuegen():
 @app.route('/')
 def homepage():
     return render_template('HOMEPAGE.html')
-@app.route('/login')
+@app.route('/login' ,methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        connection = sqlite3.connect('autowelt.db')
+        cursor = connection.cursor()
+        username = request.form.get('username')
+        password = request.form.get('password')
+        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+        user = cursor.fetchone()
+
+        connection.close()
+        if user:
+            return redirect(url_for('homepage'))
+        else:
+
+            return render_template('login.html', error='Invalid username or password')
+
+
+    else:
+        return render_template('login.html')
+
+@app.route('/users')
+def users():
+    connection = sqlite3.connect('autowelt.db')
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()  # Liefert eine Liste von Zeilen (sqlite3.Row-Objekte)
+
+    connection.close()
+
+    return render_template("users.html", rows=rows)
 
 if __name__ == '__main__':
     app.run(debug=True)
