@@ -58,26 +58,23 @@ def angebot_einfuegen():
 
     connection = sqlite3.connect('autowelt.db')
     cursor = connection.cursor()
-
+    print("-------------------------")
+    if hersteller_name is not None and automodel_name is not None and preis is not None and beschreibung is not None and verkaufer_name is not None:
+        print("Gültige Eingabe")
+    else:
+        print("Ungültige Eingabe")
 
     test = cursor.execute(
         "SELECT hersteller.id FROM hersteller WHERE hersteller.name = ?;",
         (hersteller_name,)
     )
-    print("HALLO =============> ")
     print(test.fetchall())
-
     connection.commit()
     connection.close()
-    print("Datensätze erstellt" )
 
     # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
-
-
-
-
-    return "Ihr Angebot wurde erfolgreich erstellt"
+    return "Ich bin schlaukopf, wer bist du?"
 @app.route('/')
 def homepage():
     return render_template('HOMEPAGE.html')
