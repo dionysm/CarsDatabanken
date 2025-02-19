@@ -1,4 +1,5 @@
 import sqlite3
+import random
 
 
 def create():
@@ -26,7 +27,7 @@ def create():
         price INT, 
         hersteller_id INTEGER, 
         FOREIGN KEY (hersteller_id) REFERENCES hersteller(id) 
-        ON DELETE CASCADE ON UPDATE CASCADE
+            ON DELETE CASCADE ON UPDATE CASCADE
     )""")
 
     cursor.execute("""
@@ -43,9 +44,9 @@ def create():
         auto_id INTEGER, 
         anbieter_id INTEGER, 
         FOREIGN KEY (auto_id) REFERENCES autos(id) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
+            ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY (anbieter_id) REFERENCES anbieter(id) 
-        ON DELETE CASCADE ON UPDATE CASCADE
+            ON DELETE CASCADE ON UPDATE CASCADE
     )""")
     print("Database erstellt")
 
@@ -71,94 +72,100 @@ def add_insert():
         'Hummer', 'Geely', 'Chery', 'BYD', 'Mahindra', 'Tata Motors'
     ]
 
-    # Für jede Automarke gibt es ein passendes Modell.
-    # Die ersten 5 Einträge (alte Werte) bleiben erhalten,
-    # ab Hersteller Nr. 6 wird jeweils ein Modell mit passenden Werten eingesetzt.
-    auto_entries = [
-        ('Golf 5', 2019, 100000, 1),
-        ('M3', 2019, 150000, 2),
-        ('A4', 2019, 120000, 3),
-        ('C-Class', 2019, 180000, 4),
-        ('911', 2019, 160000, 5),
-        ('500', 2020, 15000, 6),  # Fiat
-        ('Corolla', 2020, 20000, 7),  # Toyota
-        ('Civic', 2020, 21000, 8),  # Honda
-        ('Altima', 2020, 22000, 9),  # Nissan
-        ('Mustang', 2020, 30000, 10),  # Ford
-        ('Camaro', 2020, 35000, 11),  # Chevrolet
-        ('Impreza', 2020, 25000, 12),  # Subaru
-        ('MX-5', 2020, 27000, 13),  # Mazda
-        ('Elantra', 2020, 19000, 14),  # Hyundai
-        ('Optima', 2020, 21000, 15),  # Kia
-        ('Lancer', 2020, 18000, 16),  # Mitsubishi
-        ('Clio', 2020, 17000, 17),  # Renault
-        ('208', 2020, 16000, 18),  # Peugeot
-        ('C3', 2020, 15000, 19),  # Citroen
-        ('XC90', 2020, 50000, 20),  # Volvo
-        ('Range Rover', 2020, 70000, 21),  # Land Rover
-        ('XF', 2020, 45000, 22),  # Jaguar
-        ('IS', 2020, 40000, 23),  # Lexus
-        ('TLX', 2020, 38000, 24),  # Acura
-        ('Q50', 2020, 39000, 25),  # Infiniti
-        ('Charger', 2020, 32000, 26),  # Dodge
-        ('Wrangler', 2020, 33000, 27),  # Jeep
-        ('Sierra', 2020, 34000, 28),  # GMC
-        ('Escalade', 2020, 75000, 29),  # Cadillac
-        ('Model S', 2020, 80000, 30),  # Tesla
-        ('Corsa', 2020, 16000, 31),  # Opel
-        ('Octavia', 2020, 22000, 32),  # Skoda
-        ('Leon', 2020, 21000, 33),  # SEAT
-        ('Swift', 2020, 14000, 34),  # Suzuki
-        ('Cooper', 2020, 23000, 35),  # MINI
-        ('Giulia', 2020, 37000, 36),  # Alfa Romeo
-        ('DB11', 2020, 200000, 37),  # Aston Martin
-        ('Continental GT', 2020, 250000, 38),  # Bentley
-        ('Chiron', 2020, 3000000, 39),  # Bugatti
-        ('488', 2020, 280000, 40),  # Ferrari
-        ('Huracan', 2020, 300000, 41),  # Lamborghini
-        ('Ghibli', 2020, 75000, 42),  # Maserati
-        ('720S', 2020, 280000, 43),  # McLaren
-        ('Phantom', 2020, 450000, 44),  # Rolls Royce
-        ('9-3', 2020, 22000, 45),  # Saab
-        ('H2', 2020, 40000, 46),  # Hummer
-        ('Emgrand', 2020, 14000, 47),  # Geely
-        ('Tiggo', 2020, 13000, 48),  # Chery
-        ('Tang', 2020, 30000, 49),  # BYD
-        ('XUV500', 2020, 25000, 50),  # Mahindra
-        ('Nano', 2020, 5000, 51)
-        # Tata Motors
-    ]
-
-    # Anbieter (Verkäufer) – hier nehmen wir 5 Beispielnamen
-    vendor_names = ["Habert", "Bernard", "Albert", "Maria", "Pannyellow"]
-
-    # User List
-    user_names = ["Dejan", "Adem", "Dmytro", "Dio", "Magdalena", "Roman", "Alexander"]
-
-
     # Hersteller einfügen
     cursor.executemany("INSERT INTO hersteller (name) VALUES (?)", [(m,) for m in manufacturers])
 
-    # Autos einfügen
-    cursor.executemany("INSERT INTO autos (model, jahr, price, hersteller_id) VALUES (?, ?, ?, ?)", auto_entries)
+    # Echte Modelle pro Hersteller (mindestens 5 pro Marke)
+    models_dict = {
+        'Volkswagen': ['Golf', 'Passat', 'Polo', 'Tiguan', 'Touran'],
+        'BMW': ['3er', '5er', '7er', 'X3', 'X5'],
+        'Audi': ['A3', 'A4', 'A6', 'Q5', 'Q7'],
+        'Mercedes': ['C-Klasse', 'E-Klasse', 'S-Klasse', 'GLC', 'GLE'],
+        'Porsche': ['911', 'Cayenne', 'Macan', 'Panamera', 'Boxster'],
+        'Fiat': ['500', 'Panda', 'Tipo', 'Doblo', '500X'],
+        'Toyota': ['Corolla', 'Camry', 'Prius', 'RAV4', 'Hilux'],
+        'Honda': ['Civic', 'Accord', 'CR-V', 'HR-V', 'Jazz'],
+        'Nissan': ['Altima', 'Sentra', 'Maxima', 'Leaf', 'Qashqai'],
+        'Ford': ['Focus', 'Fiesta', 'Mustang', 'Explorer', 'F-150'],
+        'Chevrolet': ['Camaro', 'Corvette', 'Malibu', 'Silverado', 'Tahoe'],
+        'Subaru': ['Impreza', 'Forester', 'Outback', 'WRX', 'Crosstrek'],
+        'Mazda': ['Mazda3', 'Mazda6', 'CX-5', 'CX-9', 'MX-5'],
+        'Hyundai': ['Elantra', 'Sonata', 'Tucson', 'Santa Fe', 'Kona'],
+        'Kia': ['Rio', 'Optima', 'Sorento', 'Sportage', 'Stinger'],
+        'Mitsubishi': ['Outlander', 'Outlander Sport', 'ASX', 'Eclipse Cross', 'Pajero Sport'],
+        'Renault': ['Clio', 'Megane', 'Captur', 'Kadjar', 'Talisman'],
+        'Peugeot': ['208', '308', '508', '2008', '3008'],
+        'Citroen': ['C3', 'C4', 'C5 Aircross', 'C1', 'Berlingo'],
+        'Volvo': ['S60', 'S90', 'XC60', 'XC90', 'V60'],
+        'Land Rover': ['Range Rover', 'Discovery', 'Defender', 'Evoque', 'Freelander'],
+        'Jaguar': ['XE', 'XF', 'XJ', 'F-Pace', 'E-Pace'],
+        'Lexus': ['IS', 'ES', 'GS', 'RX', 'NX'],
+        'Acura': ['TLX', 'MDX', 'RDX', 'ILX', 'RLX'],
+        'Infiniti': ['Q50', 'Q60', 'QX50', 'QX60', 'QX80'],
+        'Dodge': ['Charger', 'Challenger', 'Durango', 'Grand Caravan', 'Journey'],
+        'Jeep': ['Wrangler', 'Grand Cherokee', 'Cherokee', 'Compass', 'Renegade'],
+        'GMC': ['Sierra', 'Yukon', 'Canyon', 'Acadia', 'Terrain'],
+        'Cadillac': ['CTS', 'Escalade', 'XT5', 'ATS', 'SRX'],
+        'Tesla': ['Model S', 'Model 3', 'Model X', 'Model Y', 'Roadster'],
+        'Opel': ['Corsa', 'Astra', 'Insignia', 'Mokka', 'Crossland'],
+        'Skoda': ['Octavia', 'Fabia', 'Superb', 'Kodiaq', 'Scala'],
+        'SEAT': ['Leon', 'Ibiza', 'Ateca', 'Tarraco', 'Alhambra'],
+        'Suzuki': ['Swift', 'Vitara', 'Baleno', 'Celerio', 'Jimny'],
+        'MINI': ['Cooper', 'Clubman', 'Countryman', 'Paceman', 'John Cooper Works'],
+        'Alfa Romeo': ['Giulia', 'Stelvio', '4C', 'Giulietta', 'Spider'],
+        'Aston Martin': ['DB11', 'Vantage', 'Rapide', 'Vanquish', 'DBS'],
+        'Bentley': ['Continental GT', 'Flying Spur', 'Bentayga', 'Mulsanne', 'Azure'],
+        'Bugatti': ['Chiron', 'Veyron', 'Divo', 'Centodieci', 'La Voiture Noire'],
+        'Ferrari': ['488', 'Portofino', 'F8 Tributo', 'California', 'Roma'],
+        'Lamborghini': ['Aventador', 'Huracan', 'Urus', 'Gallardo', 'Murcielago'],
+        'Maserati': ['Ghibli', 'Levante', 'Quattroporte', 'GranTurismo', 'MC20'],
+        'McLaren': ['720S', '570S', '650S', 'P1', 'Senna'],
+        'Rolls Royce': ['Phantom', 'Ghost', 'Wraith', 'Dawn', 'Cullinan'],
+        'Saab': ['9-3', '9-5', '900', '9000', '9-2X'],
+        'Hummer': ['H1', 'H2', 'H3', 'Hummer EV', 'Hummer HX'],
+        'Geely': ['Emgrand', 'Atlas', 'Boyue', 'Vision', 'Vision SUV'],
+        'Chery': ['Tiggo', 'Arrizo', 'Fulwin', 'QQ', 'Tiggo 8'],
+        'BYD': ['Tang', 'Qin', 'Han', 'Song', 'Yuan'],
+        'Mahindra': ['Thar', 'Scorpio', 'XUV500', 'Marazzo', 'Bolero'],
+        'Tata Motors': ['Nano', 'Indica', 'Tiago', 'Tigor', 'Harrier']
+    }
 
-    # Anbieter einfügen
+    # Erstelle Autoeinträge basierend auf echten Modellen
+    auto_entries = []
+    for hersteller_index, manufacturer in enumerate(manufacturers, start=1):
+        for model in models_dict.get(manufacturer, []):
+            jahr = random.randint(2015, 2023)
+            price = random.randint(15000, 100000)
+            auto_entries.append((model, jahr, price, hersteller_index))
+
+    cursor.executemany(
+        "INSERT INTO autos (model, jahr, price, hersteller_id) VALUES (?, ?, ?, ?)",
+        auto_entries
+    )
+
+    # Anbieter (Verkäufer)
+    vendor_names = [
+        "Habert", "Bernard", "Albert", "Maria", "Pannyellow",
+        "Dejan", "Adem", "Dmytro", "Dio", "Magdalena", "Roman", "Alexander"
+    ]
     cursor.executemany("INSERT INTO anbieter (name) VALUES (?)", [(v,) for v in vendor_names])
 
-    # Für user / anbieter
-    #cursor.executemany("INSERT INTO user (name) VALUES (?)", [(v,) for v in vendor_names])
-
-    # Für jedes Auto wird ein Angebot generiert.
-    # Wir gehen davon aus, dass die Autonummer (auto_id) der Reihenfolge im auto_entries entspricht.
+    # Für jedes Auto werden 3 bis 4 Angebote generiert.
     angebot_entries = []
-    for i, (model, jahr, price, hersteller_id) in enumerate(auto_entries, start=1):
-        # Wähle den Anbieter zyklisch aus der vendor_names-Liste
-        anbieter_id = (i - 1) % len(vendor_names) + 1
-        vendor = vendor_names[anbieter_id - 1]
-        # Hole den Hersteller-Namen (Hersteller-ID entspricht dem Index+1 in der manufacturers-Liste)
-        manufacturer = manufacturers[hersteller_id - 1]
-        description = f"{vendor}: {manufacturer} {model}, {jahr}, {price}"
-        angebot_entries.append((price, description, i, anbieter_id))
+    for auto_index, (model, jahr, base_price, hersteller_id) in enumerate(auto_entries, start=1):
+        number_of_offers = random.choice([3, 4])
+        for j in range(number_of_offers):
+            vendor_index = (auto_index + j - 1) % len(vendor_names)
+            vendor_id = vendor_index + 1
+            manufacturer = manufacturers[hersteller_id - 1]
+            variations = [0.95, 1.0, 1.05, 1.1]
+            variation = variations[j % len(variations)]
+            angebot_preis = int(base_price * variation)
+            beschreibung = (
+                f"{vendor_names[vendor_index]} bietet einen {manufacturer} {model} "
+                f"({jahr}) an. Basispreis: {base_price}, Angebotspreis: {angebot_preis}"
+            )
+            angebot_entries.append((angebot_preis, beschreibung, auto_index, vendor_id))
 
     cursor.executemany(
         "INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id) VALUES (?, ?, ?, ?)",
