@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
-from flask_session import Session
+#from flask_session import Session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'beispiel'

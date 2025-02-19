@@ -6,7 +6,7 @@
 </head>
 <body>
 {% if username %}
-    <h2> Hallo {{ username }}</h2>
+    <h2 align="center"> Hallo {{ username }}</h2>
 {% endif %}
 <form action="{{ url_for('angebot_erstellen') }}" method="GET">
     <button type="submit">Angebot erstellen</button>
