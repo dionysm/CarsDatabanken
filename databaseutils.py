@@ -48,6 +48,13 @@ def create():
         FOREIGN KEY (anbieter_id) REFERENCES anbieter(id) 
             ON DELETE CASCADE ON UPDATE CASCADE
     )""")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    username varchar(50) NOT NULL,
+    password varchar(50) NOT NULL
+    )""")
     print("Database erstellt")
 
     connection.commit()
@@ -173,6 +180,16 @@ def add_insert():
         "INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id) VALUES (?, ?, ?, ?)",
         angebot_entries
     )
+    cursor.execute("""
+    INSERT INTO users (username, password) VALUES ('admin', 'Password'),
+    ('Magdalena', 'Password'),
+    ('guest', 'Password'),
+    ('Adem', 'Password'),
+    ('Dmytro', 'Password'),
+    ('Dionys', 'Password'),
+    ('Dejan', 'Password'),
+    ('Alexander', 'Password') 
+    """)
 
     connection.commit()
     connection.close()

@@ -1,7 +1,40 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
+#from flask_session import Session
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'beispiel'
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Connect to the database
+        connection = sqlite3.connect('autowelt.db')
+        cursor = connection.cursor()
+
+        # Query the database for the user
+        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+        user = cursor.fetchone()  # Fetch one user record
+
+        connection.close()
+
+        if user:
+            session['logged_in'] = True
+            session['username'] = username  # Store the username in the session
+            return redirect(url_for('homepage'))  # Redirect to homepage
+        else:
+            return render_template('login.html', error="Ungültige Anmeldedaten")  # Show login page with error message
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
 @app.route('/search')
 def angebot_suchen():
     # Verbindung zur Datenbank herstellen
@@ -31,10 +64,11 @@ def show_data():
     rows = cursor.fetchall()
     connection.close()
     return render_template('results.html', data=rows)
-@app.route('/angebot_erstellen')
+@app.route('/angebot_erstellen', methods=['GET'])
 def angebot_erstellen():
     connection = sqlite3.connect('autowelt.db')
     cursor = connection.cursor()
+    username = session.get('username')
     cursor.execute("Select * FROM hersteller")
     hersteller = cursor.fetchall()
     cursor.execute("Select * FROM autos")
@@ -42,7 +76,7 @@ def angebot_erstellen():
     cursor.execute("Select * FROM anbieter")
     verkaufer = cursor.fetchall()
     connection.close()
-    return render_template('createOffer.html', hersteller_liste=hersteller, modelle_liste=modelle, verkaeufer_liste=verkaufer)
+    return render_template('createOffer.html', hersteller_liste=hersteller, modelle_liste=modelle, verkaeufer_liste=verkaufer, username=username)
 
 
 # ?hersteller=Volkswagen&automodel=M3&preis=1234&beschreibung=Hallo+Dejan&verkaeufer=Bernard
@@ -75,12 +109,41 @@ def angebot_einfuegen():
     # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
     return "Ich bin schlaukopf, wer bist du?"
-@app.route('/')
+@app.route('/', methods=['GET'])
 def homepage():
-    return render_template('HOMEPAGE.html')
-@app.route('/login')
+    username = session.get('username')
+    return render_template('HOMEPAGE.html', username=username)
+""""@app.route('/login' ,methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        connection = sqlite3.connect('autowelt.db')
+        cursor = connection.cursor()
+        username = request.form.get('username')
+        password = request.form.get('password')
+        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+        user = cursor.fetchone()
+
+        connection.close()
+        if user:
+            return render_template('HOMEPAGE.html', username=username)
+        else:
+
+            return render_template('login.html', error='Invalid username or password')
+
+
+    else:
+        return render_template('login.html')"""
+
+@app.route('/users')
+def users():
+    connection = sqlite3.connect('autowelt.db')
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()  # Liefert eine Liste von Zeilen (sqlite3.Row-Objekte)
+
+    connection.close()
+
+    return render_template("users.html", rows=rows)
 
 if __name__ == '__main__':
     app.run(debug=True)
