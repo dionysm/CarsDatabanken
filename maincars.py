@@ -75,9 +75,10 @@ def angebot_einfuegen():
     # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
     return "Ich bin schlaukopf, wer bist du?"
-@app.route('/')
+@app.route('/', methods=['GET'])
 def homepage():
-    return render_template('HOMEPAGE.html')
+    username = request.args.get('username')
+    return render_template('HOMEPAGE.html', username=username)
 @app.route('/login' ,methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -90,7 +91,7 @@ def login():
 
         connection.close()
         if user:
-            return redirect(url_for('homepage'))
+            return render_template('HOMEPAGE.html', username=username)
         else:
 
             return render_template('login.html', error='Invalid username or password')

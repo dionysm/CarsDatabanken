@@ -5,16 +5,18 @@
     <title >Homepage</title>
 </head>
 <body>
+{% if username %}
+    <h2> Hallo {{ username }}</h2>
+{% endif %}
 <form action="{{ url_for('angebot_erstellen') }}" method="GET">
     <button type="submit">Angebot erstellen</button>
 </form><br>
 <form action="{{ url_for('angebot_suchen') }}" method="GET">
     <button type="submit">Angebot suchen</button>
 </form><br>
-    <form action="{{ url_for('login') }}" method="POST">
+    <form action="{{ url_for('login') }}" method="GET">
     <button type="submit">Login</button>
 </form>
-
 
 </body>
 </html>
