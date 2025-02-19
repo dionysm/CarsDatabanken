@@ -34,7 +34,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('login'))
+    return render_template('HOMEPAGE.html')
 @app.route('/search')
 def angebot_suchen():
     # Verbindung zur Datenbank herstellen
@@ -82,25 +82,21 @@ def angebot_erstellen():
 # ?hersteller=Volkswagen&automodel=M3&preis=1234&beschreibung=Hallo+Dejan&verkaeufer=Bernard
 @app.route('/angebot_einfuegen', methods=['GET'])
 def angebot_einfuegen():
+    connection = sqlite3.connect('autowelt.db')
+    cursor = connection.cursor()
+
     hersteller_name = request.args.get('hersteller')
     automodel_name = request.args.get('automodel')
-
-
     preis = request.args.get('preis')
     beschreibung = request.args.get('beschreibung')
     verkaufer_name = request.args.get('verkaufer')
 
-    connection = sqlite3.connect('autowelt.db')
-    cursor = connection.cursor()
     print("-------------------------")
-    if hersteller_name is not None and automodel_name is not None and preis is not None and beschreibung is not None and verkaufer_name is not None:
-        print("Gültige Eingabe")
-    else:
-        print("Ungültige Eingabe")
 
-    test = cursor.execute(
-        "SELECT hersteller.id FROM hersteller WHERE hersteller.name = ?;",
-        (hersteller_name,)
+    test = cursor.executemany(
+        "INSERT INTO angebot (angebot_preis,beschreibung,auto_id,anbieter_id) VALUES (?, ?, (SELECT id FROM autos WHERE model = ?), (SELECT id FROM anbieter WHERE name = ?))",[
+
+        (preis,beschreibung,automodel_name,verkaufer_name)]
     )
     print(test.fetchall())
     connection.commit()
