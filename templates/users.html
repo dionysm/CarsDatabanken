@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h2>Allgemeine Info über Users</h2>
+    <table>
+    <tr>
+        <th>User ID</th>
+        <th>Username</th>
+        <th>Password</th>
+
+    </tr>
+    {% for row in rows %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>
