@@ -89,21 +89,18 @@ def angebot_einfuegen():
     automodel_name = request.args.get('automodel')
     preis = request.args.get('preis')
     beschreibung = request.args.get('beschreibung')
-    verkaufer_name = request.args.get('verkaufer')
-
+    anbieter = request.args.get('verkaeufer')
+    print(anbieter)
     print("-------------------------")
-
-    test = cursor.executemany(
-        "INSERT INTO angebot (angebot_preis,beschreibung,auto_id,anbieter_id) VALUES (?, ?, (SELECT id FROM autos WHERE model = ?), (SELECT id FROM anbieter WHERE name = ?))",[
-
-        (preis,beschreibung,automodel_name,verkaufer_name)]
+    cursor.execute(
+        "INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id) VALUES (?, ?, (SELECT id FROM autos WHERE model = ?), (SELECT id FROM anbieter WHERE name = ?))",
+        (preis, beschreibung, automodel_name, anbieter)
     )
-    print(test.fetchall())
     connection.commit()
     connection.close()
 
     # DEBUG
-    print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
+    print(hersteller_name, automodel_name, preis, beschreibung, anbieter)
     return "Ich bin schlaukopf, wer bist du?"
 @app.route('/', methods=['GET'])
 def homepage():
