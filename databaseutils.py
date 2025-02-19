@@ -161,6 +161,8 @@ def add_insert():
             variations = [0.95, 1.0, 1.05, 1.1]
             variation = variations[j % len(variations)]
             angebot_preis = int(base_price * variation)
+            angebot_preis = (angebot_preis // 100) * 100  # ergibt 17500
+
             beschreibung = (
                 f"{vendor_names[vendor_index]} bietet einen {manufacturer} {model} "
                 f"({jahr}) an. Basispreis: {base_price}, Angebotspreis: {angebot_preis}"
