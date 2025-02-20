@@ -4,48 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-        body {
-            background-color: black;
-            color: white; /* Standard Schriftfarbe auf weiß */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background-color: rgba(7, 197, 172, 0.1);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(8, 253, 241, 0.2);
-            text-align: center; /* Text zentrieren */
-        }
-        input[type="text"],
-        input[type="password"],
-        input[type="submit"] {
-            width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
-            height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid lightgray;
-            border-radius: 8px;
-            background-color: #0080FF;
-            input color: white; /* Schriftfarbe für Eingabefelder */
-            text-align: center; /* Text zentrieren */
-            box-sizing: border-box; /* Padding in der Breite berücksichtigen */
-        }
-        input[type="text"]:hover,
-        input[type="password"]:hover,
-        input[type="submit"]:hover {
-            background-color: #A9F5F2; /* Hover-Effekt für alle Eingabefelder und Buttons */
-        }
-        h2 {
-            color: white; /* Schriftfarbe für den Titel */
-            margin: 0; /* Abstand entfernen */
-        }
-    </style>
+     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body>
     <div class="login-container">

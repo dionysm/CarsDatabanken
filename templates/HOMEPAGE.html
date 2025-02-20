@@ -2,26 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title >Homepage</title>
+    <title>Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-{% if username %}
-    <h2 align="center"> Hallo {{ username }}</h2>
-{% endif %}
-<form action="{{ url_for('angebot_erstellen') }}" method="GET">
-    <button type="submit">Angebot erstellen</button>
-</form><br>
-<form action="{{ url_for('angebot_suchen') }}" method="GET">
-    <button type="submit">Angebot suchen</button>
-</form><br>
-    <form action="{{ url_for('login') }}" method="GET">
-    <button type="submit">Login</button>
-</form><br>
+<div class="login-container">
 
 
-    <form action="{{ url_for('logout') }}" method="GET">
-    <button type="submit">Logout</button>
+    {% if username %}
+        <h2 align="center"> Hallo {{ username }}</h2>
+    {% endif %}
+    <form action="{{ url_for('angebot_erstellen') }}" method="GET">
+        <button type="submit">Angebot erstellen</button>
     </form>
+
+    <br>
+    <form action="{{ url_for('angebot_suchen') }}" method="GET">
+        <button type="submit">Angebot suchen</button>
+    </form>
+    <br>
+    <form action="{{ url_for('login') }}" method="GET">
+        <button type="submit">Login</button>
+    </form>
+    <br>
+    <form action="{{ url_for('logout') }}" method="GET">
+        <button type="submit">Logout</button>
+    </form>
+</div>
 
 </body>
 </html>
