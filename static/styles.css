@@ -27,9 +27,7 @@ body {
 
 }
 
-input[type="text"],
-input[type="password"],
-input[type="submit"] {
+input {
     width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
     height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
     padding: 10px;
@@ -42,9 +40,7 @@ input[type="submit"] {
     box-sizing: border-box; /* Padding in der Breite berücksichtigen */
 }
 
-input[type="text"]:hover,
-input[type="password"]:hover,
-input[type="submit"]:hover {
+input:hover {
     background-color: #A9F5F2; /* Hover-Effekt für alle Eingabefelder und Buttons */
 }
 
@@ -59,3 +55,4 @@ button
 
 
 }
+
