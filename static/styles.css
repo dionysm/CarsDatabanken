@@ -49,7 +49,7 @@ input[type="submit"]:hover {
 
 .login-container h2 {
     color: black; /* Schriftfarbe für den Titel */
-    margin: 0; /* Abstand entfernen */
+    margin-bottom:50px ; /* Abstand entfernen */
 }
 button
 {
