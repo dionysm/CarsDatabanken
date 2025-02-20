@@ -19,14 +19,16 @@ body {
 
 }
 .AngebotErstellt{
-    background-color: #007bff;
+    background-color: #b6e6d9;
     background-image:url("img/panda.PNG");
     background-size: contain;
+    align-items: normal;
+    text-shadow: 2px 2px 5px rgba(0,0,0.7);
 
 
 }
 .TextFarbe{
-    margin-top:0px;
+    margin-top:30px;
     color:pink;
 }
 .logo{
