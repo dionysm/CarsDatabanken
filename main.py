@@ -1,149 +1,47 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-
 import sqlite3
+
+# Flask App Initialization
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuperSecret'
-# Initialize the LoginManager
+
+# Flask-Login Initialization
 login_manager = LoginManager(app)
-
-# Specify the login view
 login_manager.login_view = 'login'
-login_manager.login_message = 'Please log in to access this page.'
+login_manager.login_message = 'Bitte loggen Sie sich ein, um diese Seite zu sehen.'
 
-QUERY_TYPE_ALL = "all"
-QUERY_TYPE_ONE = "one"
+# Konstanten für die dbcurso Funktion
+QUERY_TYPE_ALL = 1  # gibt eine Liste von allen Zeilen aus Select aus
+QUERY_TYPE_ONE = 0  # gibts nur eine Zeile aus Select
 
 
-# Helper functions to remove redundancy and make things easier
+# --- HELPER FUNCTIONS ---
 def dbcursor(query, params=None, fetch_type=None):
-    connection = sqlite3.connect('data/autowelt.db')
-    cursor = connection.cursor()
-    if params:
-        cursor.execute(query, params)
-    else:
-        cursor.execute(query)
-    fetched = None
-    if fetch_type == QUERY_TYPE_ALL:
-        fetched = cursor.fetchall()
-    elif fetch_type == QUERY_TYPE_ONE:
-        fetched = cursor.fetchone()
-    connection.commit()
-    connection.close()
-    return fetched
-
-
-def get_hersteller_list():
-    return dbcursor("SELECT * FROM hersteller", None, QUERY_TYPE_ALL)
-
-
-def get_available_autos():
-    return dbcursor("SELECT * FROM autos", None, QUERY_TYPE_ALL)
-
-
-def get_available_anbieter():
-    return dbcursor("SELECT * FROM anbieter", None, QUERY_TYPE_ALL)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        # Verify username and password
-        user_data = dbcursor("SELECT id, username, password FROM users WHERE username = ? AND password = ?",
-                             (username, password), QUERY_TYPE_ONE)
-        if user_data:
-            user = User(user_data[0], user_data[1])
-            login_user(user)  # Login the user
-            return redirect(url_for('startseite'))  # Redirect to the homepage
+    """
+    Simplifies database connection and query execution.
+    """
+    try:
+        connection = sqlite3.connect('data/autowelt.db')
+        cursor = connection.cursor()
+        # Execute query
+        cursor.execute(query, params or ())
+        if fetch_type == QUERY_TYPE_ALL:
+            result = cursor.fetchall()
         else:
-            return render_template('login.html', error="Invalid credentials")
-    return render_template('login.html')
+            result = cursor.fetchone()
+        connection.commit()
+    finally:
+        connection.close()
+    return result
 
 
-@app.route('/logout')
-def logout():
-    session.clear()  # Simplified session clearing
-    return redirect(url_for('startseite'))
+def ganze_tabelle(table_name):
+    return dbcursor(f"SELECT * FROM {table_name}", fetch_type=QUERY_TYPE_ALL)
 
 
-@app.route('/suche')
-def suche():
-    hersteller_list = get_hersteller_list()
-    return render_template("suche.html", data=hersteller_list)
-
-
-@app.route('/suchergebnis', methods=['GET'])
-def suchergbebnis():
-    hersteller_id = request.args.get('id')
-    query = """
-    SELECT hersteller.id, hersteller.name, autos.model, autos.jahr, autos.price, 
-           anbieter.name, angebot.angebot_preis, angebot.beschreibung
-    FROM hersteller 
-    JOIN autos ON hersteller.id = autos.hersteller_id 
-    JOIN angebot ON angebot.auto_id = autos.id 
-    JOIN anbieter ON angebot.anbieter_id = anbieter.id 
-    WHERE hersteller.id = ?
-    """
-    rows = dbcursor(query, (hersteller_id,), QUERY_TYPE_ALL)
-    return render_template('suche-ergebnisse.html', data=rows)
-
-
-@app.route('/angebot_erstellen', methods=['GET'])
-@login_required
-def angebot_erstellen():
-    username = current_user.username  # Get the logged-in username
-    hersteller_list = get_hersteller_list()
-    autos_list = get_available_autos()
-    anbieter_list = get_available_anbieter()
-    return render_template(
-        'angebot-erstellen.html',
-        hersteller_liste=hersteller_list,
-        modelle_liste=autos_list,
-        verkaeufer_liste=anbieter_list,
-        username=username,
-    )
-
-
-@app.route('/erfolgreich-eingefuegt', methods=['GET'])
-def erfolgreich_eingefuegt():
-    username = current_user.username
-    hersteller_name = request.args.get('hersteller')
-    automodel_name = request.args.get('automodel')
-    preis = request.args.get('preis')
-    beschreibung = request.args.get('beschreibung')
-    query = """
-    INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id)
-    VALUES (
-        ?, ?, 
-        (SELECT id FROM autos WHERE model = ?), 
-        (SELECT id FROM anbieter WHERE name = ?)
-    )
-    """
-    dbcursor(query, (preis, beschreibung, automodel_name, username))
-    return render_template('erfolgreich-eingefuegt.html', bodyclass="AngebotErstellt")
-
-
-@app.route('/', methods=['GET'])
-def startseite():
-    # Check if the user is authenticated
-    if current_user.is_authenticated:
-        username = current_user.username
-    else:
-        username = None  # or set a default value like "Guest"
-    return render_template('startseite.html', username=username)
-
-
-@app.route('/users')
-def users():
-    user_rows = dbcursor("SELECT * FROM users", None, QUERY_TYPE_ALL)
-    return render_template("benutzer.html", rows=user_rows)
-
-
+# --- USER MODEL AND AUTHENTICATION ---
 class User(UserMixin):
-    # User class for Flask-Login
     def __init__(self, id, username):
         self.id = id
         self.username = username
@@ -152,9 +50,103 @@ class User(UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     user_data = dbcursor("SELECT id, username FROM users WHERE id = ?", (user_id,), QUERY_TYPE_ONE)
-    if user_data:
-        return User(user_data[0], user_data[1])
-    return None
+    return User(user_data[0], user_data[1])
 
+
+# --- ROUTES ---
+@app.route('/')
+def startseite():
+    username = current_user.username if current_user.is_authenticated else None
+    return render_template('startseite.html', username=username)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Verify user credentials
+        user_data = dbcursor("SELECT id, username, password FROM users WHERE username = ? AND password = ?",
+                             (username, password), QUERY_TYPE_ONE)
+
+        if user_data:
+            login_user(User(user_data[0], user_data[1]))  # Log the user in
+            return redirect(url_for('startseite'))  # Redirect to homepage
+        return render_template('login.html', error="Invalid credentials")
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()  # Logout current user
+    return redirect(url_for('startseite'))
+
+
+@app.route('/suche')
+def suche():
+    hersteller_list = ganze_tabelle("hersteller")
+    return render_template("suche.html", data=hersteller_list)
+
+
+@app.route('/suchergebnis', methods=['GET'])
+def suchergbebnis():
+    hersteller_id = request.args.get('id')
+    query = """
+        SELECT hersteller.id, hersteller.name, autos.model, autos.jahr, autos.price, 
+               anbieter.name, angebot.angebot_preis, angebot.beschreibung
+        FROM hersteller 
+        JOIN autos ON hersteller.id = autos.hersteller_id 
+        JOIN angebot ON angebot.auto_id = autos.id 
+        JOIN anbieter ON angebot.anbieter_id = anbieter.id 
+        WHERE hersteller.id = ?
+    """
+    suchergebnisse = dbcursor(query, (hersteller_id,), QUERY_TYPE_ALL)
+    return render_template('suche-ergebnisse.html', data=suchergebnisse)
+
+
+@app.route('/angebot_erstellen', methods=['GET', 'POST'])
+@login_required  # benötigt login für den view!
+def angebot_erstellen():
+    if request.method == 'POST':
+        automodel_name = request.form.get('automodel')
+        preis = request.form.get('preis')
+        beschreibung = request.form.get('beschreibung')
+        query = """
+            INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id)
+            VALUES (
+                ?, ?, 
+                (SELECT id FROM autos WHERE model = ?), 
+                (SELECT id FROM anbieter WHERE name = ?)
+            )
+        """
+        dbcursor(query, (preis, beschreibung, automodel_name, current_user.username))
+        return redirect(url_for('erfolgreich_eingefuegt'))
+
+    hersteller_list = ganze_tabelle("hersteller")
+    autos_list = ganze_tabelle("autos")
+    anbieter_list = ganze_tabelle("anbieter")
+    return render_template(
+        'angebot-erstellen.html',
+        hersteller_liste=hersteller_list,
+        modelle_liste=autos_list,
+        verkaeufer_liste=anbieter_list,
+    )
+
+
+@app.route('/erfolgreich-eingefuegt', methods=['GET'])
+def erfolgreich_eingefuegt():
+    return render_template('erfolgreich-eingefuegt.html', bodyclass="AngebotErstellt")
+
+
+@app.route('/users')
+def users():
+    user_rows = ganze_tabelle("users")
+    return render_template("benutzer.html", rows=user_rows)
+
+
+# --- Starte als Main nur, wenn die Datei direkt ausgeführt wird
 if __name__ == '__main__':
     app.run(debug=True)
