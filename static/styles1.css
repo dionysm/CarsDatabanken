@@ -1,0 +1,89 @@
+body {
+    background-image: url("img/mersedesc220.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: black;
+    color: white; /* Standard Schriftfarbe auf weiß */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.logo{
+
+    width: 100vh;
+    height: 100vh;
+}
+.login-container {
+    background-color: rgba(7, 197, 172, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(8, 253, 241, 0.2);
+    text-align: center; /* Text zentrieren */
+
+}
+
+input, button, select {
+    width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
+    height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    background-color: #0080FF;
+    input-color: white; /* Schriftfarbe für Eingabefelder */
+    text-align: center; /* Text zentrieren */
+    box-sizing: border-box; /* Padding in der Breite berücksichtigen */
+}
+
+input:hover, button:hover {
+    background-color: #A9F5F2; /* Hover-Effekt für alle Eingabefelder und Buttons */
+    padding: 15px;
+}
+
+.login-container h2 {
+    color: black; /* Schriftfarbe für den Titel */
+    margin-bottom:50px ; /* Abstand entfernen */
+}
+button
+{
+    background-color: pink;
+    border-radius: 20px;
+}
+select
+{
+    background-color: pink;
+}
+
+.call-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px; /* Abstand nach unten hinzufügen */
+}
+
+.question {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.call-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a845;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.call-button:hover {
+    background-color: #228838;
+}
