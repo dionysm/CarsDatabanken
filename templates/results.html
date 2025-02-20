@@ -34,34 +34,42 @@
         <th>Beschreibung</th>
 
         <h3>Kontakt & Miete</h3>
-<p>Hast du Fragen oder möchtest das Auto mieten?</p>
-<a href="tel:+49123456789" class="call-button">📞 Jetzt anrufen</a>
+       <div class="call-container">
+    <span class="question">Möchtest du mit uns sprechen?</span>
+    <a href="tel:+49123456789" class="call-button">📞 Jetzt anrufen</a>
+</div>
+
 <style>
-    .call-button {
+.call-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px; /* Abstand nach unten hinzufügen */
+}
+
+.question {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.call-button {
     display: inline-block;
-    padding: 12px 20px;
-    background-color: #007bff; /* Blau */
+    padding: 10px 15px;
+    background-color: #28a845;
     color: white;
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 50px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten für Tiefenwirkung */
-    transition: all 0.3s ease; /* Sanfte Übergänge */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .call-button:hover {
-    background-color: #0056b3; /* Dunkleres Blau beim Hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stärkerer Schatten beim Hover */
-    transform: translateY(-2px); /* Leichte Verschiebung nach oben beim Hover */
+    background-color: #228838;
 }
+</style>
 
-.call-button:active {
-    transform: translateY(2px); /* Klick-Effekt mit leichtem "Eindrücken" */
-}
-</style>
-}
-</style>
     </tr>
     {% for row in data %}
     <tr>
