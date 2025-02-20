@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+<div class="login-container">
 {% if username %}
 <form action="{{ url_for('angebot_einfuegen') }}" method="GET">
     <h1>Verkaufsangebot erstellen:</h1>
@@ -49,6 +51,8 @@
 {% else %}
     {% include "login.html" %}
 {% endif %}
+
 </form>
+</div>
 </body>
 </html>
