@@ -1,4 +1,9 @@
 body {
+    background-image: url("img/FeuerAuto.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-color: black;
     color: white; /* Standard Schriftfarbe auf weiß */
     font-family: Arial, sans-serif;
@@ -8,7 +13,11 @@ body {
     height: 100vh;
     margin: 0;
 }
+.logo{
 
+    width: 100vh;
+    height: 100vh;
+}
 .login-container {
     background-color: rgba(7, 197, 172, 0.1);
     padding: 20px;
@@ -38,7 +47,14 @@ input[type="submit"]:hover {
     background-color: #A9F5F2; /* Hover-Effekt für alle Eingabefelder und Buttons */
 }
 
-h2 {
-    color: white; /* Schriftfarbe für den Titel */
+.login-container h2 {
+    color: black; /* Schriftfarbe für den Titel */
     margin: 0; /* Abstand entfernen */
+}
+button
+{
+    background-color: pink;
+
+
+
 }
