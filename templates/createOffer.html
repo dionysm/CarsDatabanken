@@ -21,7 +21,7 @@
     <br>
     <label for="automodel">Automodel:</label>
     <br>
-    <input type="text" name="automodel" list="automodels_in_db">
+    <input type="text" name="automodel" list="automodels_in_db" required>
     <datalist id="automodels_in_db">
         {% for automodel in modelle_liste %}
             <option value="{{ automodel[1] }}">{{ automodel[1] }}</option>
@@ -30,7 +30,7 @@
     <br>
     <label for="preis">Preis:</label>
     <br>
-    <input id="preis" name="preis">
+    <input id="preis" name="preis" required>
     <br>
     <br>
     <label for="beschreibung">Angebots Beschreibung:</label>
@@ -40,7 +40,7 @@
     <br>
     <label for="verkaeufer">Verkaeufer:</label>
     <br>
-    <input type="text" name="verkaeufer" list="verkaeufer_in_db">
+    <input type="text" name="verkaeufer" list="verkaeufer_in_db" required>
     <datalist id="verkaeufer_in_db">
         {% for verkaeufer in verkaeufer_liste %}
             <option value="{{ verkaeufer[1] }}">{{ verkaeufer[1] }}</option>

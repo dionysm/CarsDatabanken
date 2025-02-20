@@ -32,6 +32,36 @@
         <th>Anbieter</th>
         <th>Preis</th>
         <th>Beschreibung</th>
+
+        <h3>Kontakt & Miete</h3>
+<p>Hast du Fragen oder möchtest das Auto mieten?</p>
+<a href="tel:+49123456789" class="call-button">📞 Jetzt anrufen</a>
+<style>
+    .call-button {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #007bff; /* Blau */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 50px; /* Abgerundete Ecken */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten für Tiefenwirkung */
+    transition: all 0.3s ease; /* Sanfte Übergänge */
+}
+
+.call-button:hover {
+    background-color: #0056b3; /* Dunkleres Blau beim Hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stärkerer Schatten beim Hover */
+    transform: translateY(-2px); /* Leichte Verschiebung nach oben beim Hover */
+}
+
+.call-button:active {
+    transform: translateY(2px); /* Klick-Effekt mit leichtem "Eindrücken" */
+}
+</style>
+}
+</style>
     </tr>
     {% for row in data %}
     <tr>
