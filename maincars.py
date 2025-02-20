@@ -34,7 +34,9 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return render_template('HOMEPAGE.html')
+    session.pop('username', None)
+    return redirect(url_for('homepage'))
+   # return render_template('HOMEPAGE.html')
 @app.route('/search')
 def angebot_suchen():
     # Verbindung zur Datenbank herstellen
@@ -101,10 +103,10 @@ def angebot_einfuegen():
 
     # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, anbieter)
-    return "Ich bin schlaukopf, wer bist du?"
+    return "Das Angebot wurde erfolgreich erstellt..."
 @app.route('/', methods=['GET'])
 def homepage():
-    username = session.get('username')
+    username = session.get('username',"Gast")
     return render_template('HOMEPAGE.html', username=username)
 """"@app.route('/login' ,methods=['GET','POST'])
 def login():
