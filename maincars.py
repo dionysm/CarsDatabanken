@@ -34,7 +34,9 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('login'))
+    session.pop('username', None)
+    return redirect(url_for('homepage'))
+   # return render_template('HOMEPAGE.html')
 @app.route('/search')
 def angebot_suchen():
     # Verbindung zur Datenbank herstellen
@@ -82,36 +84,29 @@ def angebot_erstellen():
 # ?hersteller=Volkswagen&automodel=M3&preis=1234&beschreibung=Hallo+Dejan&verkaeufer=Bernard
 @app.route('/angebot_einfuegen', methods=['GET'])
 def angebot_einfuegen():
-    hersteller_name = request.args.get('hersteller')
-    automodel_name = request.args.get('automodel')
-
-
-    preis = request.args.get('preis')
-    beschreibung = request.args.get('beschreibung')
-    verkaufer_name = request.args.get('verkaufer')
-
     connection = sqlite3.connect('autowelt.db')
     cursor = connection.cursor()
-    print("-------------------------")
-    if hersteller_name is not None and automodel_name is not None and preis is not None and beschreibung is not None and verkaufer_name is not None:
-        print("Gültige Eingabe")
-    else:
-        print("Ungültige Eingabe")
 
-    test = cursor.execute(
-        "SELECT hersteller.id FROM hersteller WHERE hersteller.name = ?;",
-        (hersteller_name,)
+    hersteller_name = request.args.get('hersteller')
+    automodel_name = request.args.get('automodel')
+    preis = request.args.get('preis')
+    beschreibung = request.args.get('beschreibung')
+    anbieter = request.args.get('verkaeufer')
+    print(anbieter)
+    print("-------------------------")
+    cursor.execute(
+        "INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id) VALUES (?, ?, (SELECT id FROM autos WHERE model = ?), (SELECT id FROM anbieter WHERE name = ?))",
+        (preis, beschreibung, automodel_name, anbieter)
     )
-    print(test.fetchall())
     connection.commit()
     connection.close()
 
     # DEBUG
-    print(hersteller_name, automodel_name, preis, beschreibung, verkaufer_name)
-    return "Ich bin schlaukopf, wer bist du?"
+    print(hersteller_name, automodel_name, preis, beschreibung, anbieter)
+    return "Das Angebot wurde erfolgreich erstellt..."
 @app.route('/', methods=['GET'])
 def homepage():
-    username = session.get('username')
+    username = session.get('username',"Gast")
     return render_template('HOMEPAGE.html', username=username)
 """"@app.route('/login' ,methods=['GET','POST'])
 def login():
