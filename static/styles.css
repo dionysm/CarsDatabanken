@@ -8,16 +8,16 @@ body {
     color: white; /* Standard Schriftfarbe auf weiß */
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    justify-content:unset;
     align-items: center;
     height: 100vh;
     margin: 0;
-}
-.loginpicture{
-    background-image: url("img/mercedes/mercedes_limo.png");
-    background-size: contain;
+    flex-direction: column;
 
 }
+
+
+
 .AngebotErstellt{
     background-color: #b6e6d9;
     background-image:url("img/panda.PNG");
@@ -104,4 +104,17 @@ select
 
 .call-button:hover {
     background-color: #228838;
+}
+nav{
+
+    flex-direction: row;
+    display: flex;
+    margin-top: 2px;
+
+}
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
