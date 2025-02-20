@@ -19,11 +19,12 @@ body {
     height: 100vh;
 }
 .login-container {
-    background-color: rgba(7, 197, 172, 0.1);
+    background-color: rgba(7, 197, 172, 0.6);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(8, 253, 241, 0.2);
     text-align: center; /* Text zentrieren */
+
 }
 
 input[type="text"],
