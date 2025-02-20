@@ -27,7 +27,7 @@ body {
 
 }
 
-input {
+input, button, select {
     width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
     height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
     padding: 10px;
@@ -40,8 +40,9 @@ input {
     box-sizing: border-box; /* Padding in der Breite berücksichtigen */
 }
 
-input:hover {
+input:hover, button:hover {
     background-color: #A9F5F2; /* Hover-Effekt für alle Eingabefelder und Buttons */
+    padding: 15px;
 }
 
 .login-container h2 {
@@ -51,8 +52,9 @@ input:hover {
 button
 {
     background-color: pink;
-
-
-
+    border-radius: 20px;
 }
-
+select
+{
+    background-color: pink;
+}
