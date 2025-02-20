@@ -86,12 +86,12 @@ def angebot_erstellen():
 def angebot_einfuegen():
     connection = sqlite3.connect('autowelt.db')
     cursor = connection.cursor()
-
+    username= session.get('username')
     hersteller_name = request.args.get('hersteller')
     automodel_name = request.args.get('automodel')
     preis = request.args.get('preis')
     beschreibung = request.args.get('beschreibung')
-    anbieter = request.args.get('verkaeufer')
+    anbieter = username
     print(anbieter)
     print("-------------------------")
     cursor.execute(

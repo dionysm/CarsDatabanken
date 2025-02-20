@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<div class="login-container">
 {% if username %}
+<div class="login-container">
+
 <form action="{{ url_for('angebot_einfuegen') }}" method="GET">
     <h1>Verkaufsangebot erstellen:</h1>
     <label for="hersteller">Hersteller:</label>
@@ -38,21 +39,23 @@
     <textarea id="beschreibung" name="beschreibung"> Hier Bitte Angebot beschreiben </textarea>
     <br>
     <br>
-    <label for="verkaeufer">Verkaeufer:</label>
+    <!--<label for="verkaeufer">Verkaeufer:</label>
     <br>
     <input type="text" name="verkaeufer" list="verkaeufer_in_db" required>
     <datalist id="verkaeufer_in_db">
         {% for verkaeufer in verkaeufer_liste %}
             <option value="{{ verkaeufer[1] }}">{{ verkaeufer[1] }}</option>
         {% endfor %}
-    </datalist>
+    </datalist> -->
     <br>
     <button type="submit">Angebot erstellen</button>
-{% else %}
-    {% include "login.html" %}
-{% endif %}
+
 
 </form>
 </div>
+{% else %}
+    {% include "login.html" %}
+
+{% endif %}
 </body>
 </html>
