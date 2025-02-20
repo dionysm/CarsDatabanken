@@ -3,7 +3,7 @@ import random
 
 
 def create():
-    connection = sqlite3.connect('autowelt.db')
+    connection = sqlite3.connect('data/autowelt.db')
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -62,7 +62,7 @@ def create():
 
 
 def add_insert():
-    connection = sqlite3.connect('autowelt.db')
+    connection = sqlite3.connect('data/autowelt.db')
     cursor = connection.cursor()
 
     # Liste der 51 Automarken (Hersteller)

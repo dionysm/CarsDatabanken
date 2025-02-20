@@ -1,5 +1,5 @@
 .venv/
-/autowelt.db
+/data/autowelt.db
 .idea/
 /.idea/
 /loginsAndSessions.py
