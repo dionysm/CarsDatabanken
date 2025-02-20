@@ -93,7 +93,7 @@ def angebot_einfuegen():
     beschreibung = request.args.get('beschreibung')
     anbieter = username
     print(anbieter)
-    print("-------------------------")
+    print("---------------------")
     cursor.execute(
         "INSERT INTO angebot (angebot_preis, beschreibung, auto_id, anbieter_id) VALUES (?, ?, (SELECT id FROM autos WHERE model = ?), (SELECT id FROM anbieter WHERE name = ?))",
         (preis, beschreibung, automodel_name, anbieter)
