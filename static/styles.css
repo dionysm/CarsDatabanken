@@ -13,6 +13,22 @@ body {
     height: 100vh;
     margin: 0;
 }
+.loginpicture{
+    background-image: url("img/mercedes/mercedes_limo.png");
+    background-size: contain;
+
+}
+.AngebotErstellt{
+    background-color: #007bff;
+    background-image:url("img/panda.PNG");
+    background-size: contain;
+
+
+}
+.TextFarbe{
+    top:0px;
+    color:pink;
+}
 .logo{
 
     width: 100vh;
@@ -27,7 +43,7 @@ body {
 
 }
 
-input, button, select {
+input, button, select, textarea {
     width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
     height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
     padding: 10px;

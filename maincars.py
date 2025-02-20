@@ -103,31 +103,11 @@ def angebot_einfuegen():
 
     # DEBUG
     print(hersteller_name, automodel_name, preis, beschreibung, anbieter)
-    return "Das Angebot wurde erfolgreich erstellt..."
+    return render_template('angeboterstellt.html')
 @app.route('/', methods=['GET'])
 def homepage():
     username = session.get('username',"Gast")
     return render_template('HOMEPAGE.html', username=username)
-""""@app.route('/login' ,methods=['GET','POST'])
-def login():
-    if request.method == 'POST':
-        connection = sqlite3.connect('autowelt.db')
-        cursor = connection.cursor()
-        username = request.form.get('username')
-        password = request.form.get('password')
-        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
-        user = cursor.fetchone()
-
-        connection.close()
-        if user:
-            return render_template('HOMEPAGE.html', username=username)
-        else:
-
-            return render_template('login.html', error='Invalid username or password')
-
-
-    else:
-        return render_template('login.html')"""
 
 @app.route('/users')
 def users():
