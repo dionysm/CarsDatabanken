@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="login-container">
+    <h1>die Welt der Autos</h1>
+    <form method="GET" action="/suchergebnis">
+        <label for="hersteller">Hersteller</label>
+
+        <h1>Wähle einen Hersteller aus</h1>
+        <select name="id">
+            {% for hersteller in data %}
+                <option value="{{ hersteller[0] }}">{{ hersteller[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Okay</button>
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    <nav>
+        <form action="{{ url_for('startseite') }}" method="GET">
+            <button type="submit">Homepage</button>
+        </form>
+        {% if current_user.is_authenticated %}
+            <form action="{{ url_for('logout') }}" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('login') }}" method="GET">
+                <button type="submit">Login</button>
+            </form>
+        {% endif %}
+    </nav>
+{% endblock %}

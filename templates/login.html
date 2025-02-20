@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-</head>
-<body class="loginpicture">
-{% block nav %}
-	<nav>
-    <form action="{{ url_for('homepage') }}" method="GET">
-        <button type="submit">Homepage</button>
-    </form>
-    <form action="{{ url_for('login') }}" method="GET">
-        <button type="submit">Login</button>
-    </form>
-    <form action="{{ url_for('logout') }}" method="GET">
-        <button type="submit">Logout</button>
-    </form>
-
-
-</nav>
-{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
 <div class="login-container">
         <h2>Login</h2>
          <form action="{{ url_for('login') }}" method="POST">
@@ -31,5 +8,4 @@
             <input type="submit" value="Einloggen">
         </form>
 </div>
-</body>
-</html>
+{% endblock %}

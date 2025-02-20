@@ -1,8 +1,9 @@
 import sqlite3
 import random
-
+import os
 
 def create():
+    os.remove("data/autowelt.db")
     connection = sqlite3.connect('data/autowelt.db')
     cursor = connection.cursor()
 
@@ -152,8 +153,9 @@ def add_insert():
 
     # Anbieter (Verkäufer)
     vendor_names = [
-        "Habert", "Bernard", "Albert", "Maria", "Pannyellow",
-        "Dejan", "Adem", "Dmytro", "Dio", "Magdalena", "Roman", "Alexander"
+        "Dejan", "Adem", "Dmytro", "Dio", "Magdalena", "Roman", "Alexander", "admin",
+        "Habert", "Bernard", "Albert", "Maria", "Pannyellow"
+
     ]
     cursor.executemany("INSERT INTO anbieter (name) VALUES (?)", [(v,) for v in vendor_names])
 
