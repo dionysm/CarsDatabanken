@@ -17,10 +17,8 @@ QUERY_TYPE_ONE = 0  # gibts nur eine Zeile aus Select
 
 
 # --- HELPER FUNCTIONS ---
+# --- dbcursor macht connect / cursor / execute / commit und close, dadurch sparen wir uns das ständige wiederholen
 def dbcursor(query, params=None, fetch_type=None):
-    """
-    Simplifies database connection and query execution.
-    """
     try:
         connection = sqlite3.connect('data/autowelt.db')
         cursor = connection.cursor()
@@ -40,7 +38,7 @@ def ganze_tabelle(table_name):
     return dbcursor(f"SELECT * FROM {table_name}", fetch_type=QUERY_TYPE_ALL)
 
 
-# --- USER MODEL AND AUTHENTICATION ---
+# --- USER MODEL AND AUTHENTICATION --- KI generiert für das Usermodel
 class User(UserMixin):
     def __init__(self, id, username):
         self.id = id
@@ -53,7 +51,7 @@ def load_user(user_id):
     return User(user_data[0], user_data[1])
 
 
-# --- ROUTES ---
+# --- ROUTES --- bzw Views
 @app.route('/')
 def startseite():
     username = current_user.username if current_user.is_authenticated else None
