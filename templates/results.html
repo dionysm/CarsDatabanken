@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</div>
     <title>Allgemeine Info</title>
+
+      <div class="oeffnungszeiten">
+    <p>📆 Öffnungszeiten:</p>
+    <p>Mo-Fr: 9-18 Uhr</p>
+    <p>Sa: 10-16 Uhr</p>
+    <p>So: 🎉 PAAARTY 🎉</p>
+
+
     <style>
         table {
             width: 100%;
@@ -18,7 +28,27 @@
             background-color: lightgray;
         }
     </style>
-</head>
+</head><h3>Kontakt & Miete</h3>
+       <div class="call-container">
+    <span class="question">Möchtest du mit uns sprechen?</span>
+    <a href="tel:+49123456789" class="call-button">📞 Jetzt anrufen</a>
+
+<style>
+.call-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.call-button:hover {
+    background-color: #218838;
+}
+</style>
+
+
 <body>
 
     <h2>Allgemeine Info über Autos und Hersteller</h2>
@@ -32,15 +62,6 @@
         <th>Anbieter</th>
         <th>Preis</th>
         <th>Beschreibung</th>
-
-        <h3>Kontakt & Miete</h3>
-       <div class="call-container">
-    <span class="question">Möchtest du mit uns sprechen?</span>
-    <a href="tel:+49123456789" class="call-button">📞 Jetzt anrufen</a>
-</div>
-
-
-
 
     </tr>
     {% for row in data %}
