@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+{% block nav %}
+	<nav>
+    <form action="{{ url_for('homepage') }}" method="GET">
+        <button type="submit">Homepage</button>
+    </form>
+    <form action="{{ url_for('login') }}" method="GET">
+        <button type="submit">Login</button>
+    </form>
+    <form action="{{ url_for('logout') }}" method="GET">
+        <button type="submit">Logout</button>
+    </form>
+</nav>
+{% endblock %}
+
 <div class="login-container">
 
 
@@ -21,13 +35,9 @@
         <button type="submit">Angebot suchen</button>
     </form>
     <br>
-    <form action="{{ url_for('login') }}" method="GET">
-        <button type="submit">Login</button>
-    </form>
-    <br>
-    <form action="{{ url_for('logout') }}" method="GET">
-        <button type="submit">Logout</button>
-    </form>
+
+
+
 </div>
 
 </body>

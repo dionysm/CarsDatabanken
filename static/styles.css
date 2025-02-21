@@ -8,10 +8,27 @@ body {
     color: white; /* Standard Schriftfarbe auf weiß */
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    justify-content:unset;
     align-items: center;
     height: 100vh;
     margin: 0;
+    flex-direction: column;
+    transition: all 2s ease-in-out;
+
+}
+
+.AngebotErstellt{
+    background-color: #b6e6d9;
+    background-image:url("img/panda.PNG");
+    background-size: contain;
+    align-items: center;
+    text-shadow: 2px 2px 5px rgba(0,0,0.7);
+
+
+}
+.TextFarbe{
+    margin-top:30px;
+    color:pink;
 }
 .logo{
 
@@ -27,7 +44,7 @@ body {
 
 }
 
-input, button, select {
+input, button, select, textarea {
     width: 100%; /* Alle Eingabefelder und Buttons haben die gleiche Breite */
     height: 50px; /* Gleiche Höhe für alle Eingabefelder und Buttons */
     padding: 10px;
@@ -86,4 +103,27 @@ select
 
 .call-button:hover {
     background-color: #228838;
+}
+nav{
+    flex-direction: row;
+    display: flex;
+    margin-top: 2px;
+}
+nav button{
+    border-radius: 0 0 0 0;
+    border: none;
+}
+nav form:first-child button{
+    border-radius: 10px 0 0 10px;
+    border-right: 2px solid #DEA6B0;
+}
+nav form:last-child button{
+    border-radius:  0 10px 10px 0 ;
+    border-left: 2px solid #DEA6B0;
+}
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
